@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<div>test</div>
+	<script type="text/javascript">
+
+		function Foo () {
+			getName = function () { alert(1); }
+			return this;
+		}
+		Foo.getName = function () { alert(2); };
+		Foo.prototype.getName = function () { alert(3); };
+		var getName = function () { alert(4); };
+		function getName () { alert(5); }
+
+
+		//问题和答案
+		Foo.getName();  // 2
+		// Foo构造函数的静态方法，很明显是引用在它本身的方法
+
+		getName();  // 4
+		// 这里主要是这两句：
+		// 	var getName=function(){return 4;}
+		// 	function getName(){return 5;}
+		// 经过声明提升之后会变成这样：
+		// 	var getName;
+		// 	function getName(){return 5;}
+		// 	getName = function(){return 4;}	
+
+		Foo().getName();  // 1
+		// 这里有点麻烦，如果习惯用严格模式的话，就能看出来，这里在严格模式下其实是非法的。因为严格模式禁止this关键字指向全局对象。在非严格模式的情况下，先是运行了Foo()这个构造函数，由于没有用new，所以其中的this指向了windows，在构造函数内部定义的getName重新覆盖了原来的全局变量，返回的this实际上就是window，所以这里输出的是1。
+
+		getName();   // 1
+		// 经过了第三点，全局变量的getName已经被改写成Foo()内部的那个，这里当然仍然输出1。
+
+		new Foo.getName();  // 2
+		// （.）的优先级高于new的优先级，所以相当于	
+				// new (Foo.getName)();
+		// 这里的关键是new干了啥。规范里写的很长，简述以下就是，首先会创建一个新的空对象，然后把这个新对象的[[Prototype]]指向后面那个对象的[[Prototype]]，然后将this指针指向这个新的空对象，最后会调用后面那个对象下属的[[Construct]]这个内部方法，对它使用[[call]]，把this和括号里面的参数都传进去。
+		// 在这里的话，new后面是Foo.getName，它是一个函数那么很明显将调用Function构造器构造一个函数，所以这里将会返回一个构造函数名字是Foo.getName的函数（对象）。
+		new Foo().getName();  // 3
+		// 这里和上面又不一样了，需要这么看(new Foo()).getName()，先调用Foo()这个构造函数，实例化一个对象，然后调用这个对象的getName方法，既然是实例化对象的方法，那当然应当是在原型链上面的，所以这里返回3。	
+
+		new new Foo().getName(); // 3
+		// 这里其实就是把5和6结合了起来，先打括号分割一下new (new Foo()).getName()，同样的先是实例化了一个对象出来，然后再对这个实例化对象的getName方法使用new，这个结果和第5是一样的，返回一个构造函数名字是Foo.getName的函数（对象）。
+
+	</script>	
+</body>
+</html>
