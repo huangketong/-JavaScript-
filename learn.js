@@ -16,3 +16,24 @@ console.log(str);
   // charAt() 方法可返回指定位置的字符  stringObject.charAt(index)
 var str = "今天是星期" + "日一二三四五六".charAt(new Date().getDay());
 console.log(str);
+
+
+// 把时间戳转换为时间格式
+function formatDate(now)   {     
+    var	year=now.getFullYear();     
+    var	month=now.getMonth()+1;     
+    var	date=now.getDate();     
+    var hour=now.getHours();     
+    var minute=now.getMinutes();     
+    var second=now.getSeconds();     
+    return   year+"-"+month+"-"+date+" "+hour+":"+minute+":"+second;     
+}     
+var d = new Date(1230999938);  //  d = Thu Jan 15 1970 13:56:39 GMT+0800 (中国标准时间) 
+console.log(formatDate(d));   // 1970-1-15 13:56:39
+
+
+function getLocalTime(nS) {     
+   return new Date(parseInt(nS) * 1000).toLocaleString().replace(/:\d{1,2}$/,' ');     
+}     
+console.log(getLocalTime(1293072805));
+
