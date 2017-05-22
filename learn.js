@@ -37,3 +37,30 @@ function getLocalTime(nS) {
 }     
 console.log(getLocalTime(1293072805));
 
+
+// 遍历数组
+// ES6 引入：for…of 
+var arr = [1,3,5];
+for(let value of arr){
+    console.log(value);
+}
+// Array.prototype.forEach()： 对数组的每个元素执行一次提供的函数
+// Array.prototype.forEach(callback(currentValue, index, array){
+//     // do something
+// }[,thisArg]);
+arr.forEach((i)=>{
+	console.log(i);
+});
+
+
+/******
+     原生js学习
+ * ******/ 
+// 数据类型
+// 基本类型值包括： undefined，null，Boolean，Number和String，这些类型分别在内存中占有固定的大小空间，它们的值保存在栈空间，我们通过 按值 来访问的。 
+
+// 引用类型包括：对象、数组、函数等。 
+// 对于引用类型的值，则必须在堆内存中为这个值分配空间。
+    // 由于引用类型值的大小不固定（对象有很多属性和方法，而且还可以动态的添加属性和方法），因此不能把他们保存到栈内存中。但内存地址大小是固定的，因此可以将内存地址保存在栈内存中。
+
+// 简而言之：栈内存中存放的是基本数据类型值，堆内存中存放的是引用类型值，引用类型值在内存中的地址存放在栈中，也就是我们常说的对象对象引用(指针)。 

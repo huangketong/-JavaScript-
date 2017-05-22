@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>learn</title>
+</head>
+<body>
+    <h2>数据类型</h2>
+    <div>
+        <b>基本类型值包括</b>： undefined，null，Boolean，Number和String，这些类型分别<b>在内存中占有固定的大小空间</b>，它们的值保存在<b>栈空间</b>，我们通过<b>按值</b>来访问的.<br>
+        <b>引用类型包括</b>：对象、数组、函数等。 <br>
+        对于引用类型的值，则必须在堆内存中为这个值分配空间。由于引用类型值的大小不固定（对象有很多属性和方法，而且还可以动态的添加属性和方法），因此不能把他们保存到栈内存中。但内存地址大小是固定的，因此可以将内存地址保存在栈内存中。<br>
+
+        简而言之：栈内存中存放的是基本数据类型值，堆内存中存放的是引用类型值，引用类型值在内存中的地址存放在栈中，也就是我们常说的对象对象引用(指针)。 
+    </div>
+    <script type="text/javascript">
+        var a = 5;
+        var b = a;
+        console.log(a+"---"+b);//5---5
+        b = 6;//这里重新给b赋值，a值并没有改变
+        console.log(a+"---"+b);//5---6
+
+        var obj = {name:"lisi"};
+        var obj2 = obj;//这里是引用赋值，obj和obj2指向同一个对象
+        console.log(obj.name + "---" + obj2.name);//lisi---lisi
+        obj2.name = "wangwu";
+        console.log(obj.name + "---" + obj2.name);//wangwu---wangwu
+        console.log('从上面例子可以看出：在变量复制方面，基本类型和引用类型也有所不同，基本类型复制的是值本身，而引用类型复制的是内存地址。');
+    </script>
+    <h2>函数</h2>
+    <div>
+        <h3>this 的工作原理(5种情况)</h3>
+
+        <h5>全局作用域内</h5>
+
+        当在全部作用域内使用 this时，它将会指向全局对象，即window对象
+
+        <h5>函数调用</h5>
+
+        挡在全局作用域内调用函数时，this 也会指向全局对象。
+
+        <h5>方法调用</h5>
+
+        this 指向调用该方法的对象。
+
+        <h5>调用构造函数</h5>
+
+        在构造函数内部，this 指向新创建的对象。
+
+        <h5>显式的设置this指向</h5>
+
+        当使用call 或者 apply 方法时，函数内的 this 将会被显式设置为函数调用的第一个参数。
+    </div>
+        <h3>匿名函数</h3>
+        <p>
+            在JavaScript里<b>任何匿名函数都是属于window对象</b>。在定义匿名函数时候它会返回自己的内存地址，如果此时有个变量接收了这个内存地址，那么匿名函数就能在程序里被使用了(可以通过在这个变量后面加一对圆括号来调用这个匿名函数)，因为匿名函数也是在全局执行环境构造时候定义和赋值，所以匿名函数的this指向也是window对象。
+            <script type="text/javascript">
+                (function(){
+                    console.log(this == window);//true
+                })();
+            </script>
+        </p>
+        <h3>参数传递</h3>
+        
+        <script type="text/javascript">
+            function test(num){//按值传递
+                num+=5;
+                console.log(num);
+                return num;
+            }
+            var num = 5;
+            var result = test(num);
+            console.log(result);// 10 如果是按引用传递，那么函数里的num会成为类似全局变量，把外面的num覆盖掉
+            console.log(num);// 5 也就是说，最后应该输出20（这里输出10）
+        </script>
+        <p>
+            js中不存在引用传递，如果存在引用传递的话，那么函数内的变量将是全局变量，在外部也可以访问，但这明显是不可能的。 
+        </p>
+        <script type="text/javascript">
+            function setName(obj){//obj = person
+                obj.name = "lisi";
+                obj = new Object();
+                obj.name = "wangwu";
+            }
+            var person = new Object();
+            setName(person);
+            alert(person.name);
+            console.log(person.name);
+            console.log(obj.name);//Uncaught ReferenceError: obj is not defined
+        </script>
+        <p>
+            在将person传递给obj后，其name属性就被设置成了”lisi”。又将obj重新定义了一个对象，另一行代码为该对象定义了一个带有不同值的name属性。 
+            如果person是按引用传递的，那么person就会自动被修改为指向其name属性值为”wangwu”的新对象，但事实上并没有，其name属性依然是”lisi”。 
+            <b>这就说明</b>：即使在函数内部修改了参数的值，但原始的引用仍然保持不变。实际上，当在函数内重写obj时，这个变量引用的就是一个局部对象了。而这个局部对象会在函数执行完毕后立即被销毁。
+        </p>
+
+</body>
+</html>
