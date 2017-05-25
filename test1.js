@@ -39,6 +39,7 @@ var obj2 = {
 	c: '3'
 }
 
+
 obj2 = Object.assign(obj1,obj2);
 // obj2 = {...obj2,...obj1} 需要es6编译
 console.log(obj2);
