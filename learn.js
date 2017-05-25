@@ -64,6 +64,22 @@ Foo.prototype.getName = function () { alert (3);};
 var getName = function () { alert (4);};
 function getName() { alert (5);}
 
+/** 声明提前
+function Foo() {
+    getName = function () { alert (1); };
+    return this;
+}
+var getName;//只提升变量声明
+function getName() { alert (5);}//提升函数声明，覆盖var的声明
+
+Foo.getName = function () { alert (2);};
+Foo.prototype.getName = function () { alert (3);};
+getName = function () { alert (4);};//最终的赋值再次覆盖function getName声明
+
+getName();//最终输出4
+**/
+
+
 //答案：
 Foo.getName();//2
 getName();//4
