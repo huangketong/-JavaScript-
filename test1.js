@@ -43,3 +43,25 @@ var obj2 = {
 obj2 = Object.assign(obj1,obj2);
 // obj2 = {...obj2,...obj1} 需要es6编译
 console.log(obj2);
+
+// Fullscreen 通用的页面全屏方法
+  function toggleFullScreen() {
+    if ((document.fullScreenElement && document.fullScreenElement !== null) ||
+      (!document.mozFullScreen && !document.webkitIsFullScreen)) {
+      if (document.documentElement.requestFullScreen) {
+        document.documentElement.requestFullScreen();
+      } else if (document.documentElement.mozRequestFullScreen) {
+        document.documentElement.mozRequestFullScreen();
+      } else if (document.documentElement.webkitRequestFullScreen) {
+        document.documentElement.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
+      }
+    } else {
+      if (document.cancelFullScreen) {
+        document.cancelFullScreen();
+      } else if (document.mozCancelFullScreen) {
+        document.mozCancelFullScreen();
+      } else if (document.webkitCancelFullScreen) {
+        document.webkitCancelFullScreen();
+      }
+    }
+  }
